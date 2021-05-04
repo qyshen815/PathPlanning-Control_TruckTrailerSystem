@@ -1,3 +1,4 @@
+
 function coef = PathPlanner1(state_x0,state_x1,l_0)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   Kurs/Dozent: Automotive Control Systems / Wirtensohn
@@ -52,4 +53,3 @@ b = [y1;
 coef = linsolve(A, b);
 
 end
-

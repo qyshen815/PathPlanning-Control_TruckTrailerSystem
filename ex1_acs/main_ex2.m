@@ -46,7 +46,7 @@ coef = PathPlanner1(state_x0,state_x1,l_0)
 
 % Predefine time span T
 T = 20;
-t = linspace(1,100,1000);
+%t = linspace(1,100,1000);
 
 Parameters.coef=coef; 
 Parameters.l_0 = l_0; 
@@ -54,7 +54,7 @@ Parameters.T = T;
 Parameters.x0 = x0; 
 Parameters.x1 = x1; 
 
-[t,State] = ode45(@ODEFunc, [0,T], state_x0); 
+[t,State] = ode45(@ODEFunc, [0,T], state_x0(1:3),[], Parameters); 
 %{
 [t,y]=ode45(@vdp1,[0 20],[2 0]);   
           plot(t,y(:,1));
@@ -63,3 +63,7 @@ Parameters.x1 = x1;
       component, and plots the first component of the solution.
 %}
 
+State(:,1)
+
+figure(3)
+plot(t, State(:,1)); 

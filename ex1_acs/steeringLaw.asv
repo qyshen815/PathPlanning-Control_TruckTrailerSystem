@@ -3,10 +3,18 @@ function uRef = steeringLaw(xRef,dxRef,d2xRef,yRef,dyRef,d2yRef, Parameters)
 %STEERINGLAW Summary of this function goes here
 %   Detailed explanation goes here
 
-l_0 = Parameters.l_0; 
+l_0 = Paramters.l_0; 
+
+% define components of vector y and its derivatives
+y1 = xRef; 
+y2 = yRef; 
+dy1 = dxRef; 
+dy2 = dyRef; 
+d2y1 = d2xRef; 
+d2y2 = d2yRef;
 
 dv0 = sqrt(dxRef.^2 + dyRef.^2); 
-dphi = atan(l_0.*(dxRef.*d2xRef - d2xRef.*dyRef)./((dxRef.^2 + dyRef.^2).^(3/2))); 
+dphi = atan(; 
 
 % define components of vector u
 u1 = dphi; 
