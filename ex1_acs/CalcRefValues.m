@@ -17,7 +17,6 @@ T = Parameters.T;
 
 % Time parametrization
 tau = t./T; 
-x1_til = x1-x0;
 
 % defining a scaling parameter and its derivatives
 s_tau = 3.*tau.^2 - 2.*tau.^3; 
@@ -25,27 +24,34 @@ ds_tau = 6.*tau - 6*tau.^2;
 d2s_tau = 6 - 12.*tau; 
 
 % possible time parametrization of x and its derivatives
-xRef = x0 + x1_til.*s_tau; 
-dxRef = 1./T.*x1_til.*ds_tau;
-d2xRef = 1./T.^2.*x1_til.*d2s_tau;
+xRef = x0 + (x1-x0).*s_tau; 
+dxRef = 1./T.*(x1-x0).*ds_tau;
+d2xRef = 1./T.^2.*(x1-x0).*d2s_tau;
 
 % create the polynomial
+%{
 minX = x0; 
 maxX = x1;
 length = 1000; 
-%x = linspace(minX,maxX,length);
 x_til = linspace(minX-x0,maxX-x0,length);
-
+%}
 
 % possible time-parametrization of y and its derivatives
-yRef = a.*x_til.^5 + b.*x_til.^4 + c.*x_til.^3 + d.*x_til.^2 + e.*x_til.^1 + f.*x_til.^0;
+
+%y = a.*x_til.^5 + b.*x_til.^4 + c.*x_til.^3 + d.*x_til.^2 + e.*x_til.^1 + f.*x_til.^0;
+% polynomial with time parametrization 
+yRef = a.*xRef.^5 + b.*xRef.^4 + c.*xRef.^3 + d.*xRef.^2 + e.*xRef.^1 + f.*xRef.^0;
 
 % first derivative without time parameter
-dy_dx = 5.*a.*x_til.^4 + 4.*b.*x_til.^3 + 3.*c.*x_til.^2 + 2.*d.*x_til + e;
+dy_dx = 5.*a.*xRef.^4 + 4.*b.*xRef.^3 + 3.*c.*xRef.^2 + 2.*d.*xRef + e;
+
+% first derivative with time parameter
 dyRef = dy_dx.*dxRef;
 
 % second derivative without time parameter
-d2y_dx2 = 20.*a.*x_til.^3 + 12.*b.*x_til.^2 + 6.*c.*x_til + 2.*d; 
+d2y_dx2 = 20.*a.*xRef.^3 + 12.*b.*xRef.^2 + 6.*c.*xRef + 2.*d; 
+
+% second derivative with time parameter
 d2yRef = d2y_dx2.*dxRef.^2 + dy_dx.*d2xRef; 
 
 end
