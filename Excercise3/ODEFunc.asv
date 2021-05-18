@@ -6,7 +6,7 @@ function dState = ODEFunc(t, State, Parameters)
     
     %%
     % calculate reference values of x and y
-    [xRef, dxRef, d2xRef, yRef, dyRef, d2yRef, n, dxRef_t] = CalcRefValues(t, Parameters);
+    [xRef, dxRef, d2xRef, yRef, dyRef, d2yRef, n, dx_] = CalcRefValues(t, Parameters);
     
     %%
     % steering Law calculate input reference values v and phi
@@ -18,11 +18,11 @@ function dState = ODEFunc(t, State, Parameters)
     
     %% 
     %
-    w_dash = TimeReparametrization(n, w, dxRef_t); 
+    w_dash = TimeReparametrization(n, w, dx_til); 
     
     %%
     % simple vehicle model(time parametrized calculated state) 
-    dState = Vehicle(State,dxRef_t, w_dash,n,Parameters); 
+    dState = Vehicle(State,w, w_dash,Parameters); 
     
 end
 

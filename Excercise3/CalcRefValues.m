@@ -1,5 +1,5 @@
 
-function [xRef, dxRef, d2xRef, yRef, dyRef, d2yRef, n, dx_til] = CalcRefValues(t,Parameters)
+function [xRef, dxRef, d2xRef, yRef, dyRef, d2yRef, n, dxRef_t] = CalcRefValues(t,Parameters)
 %CALCREFVALUES Summary of this function goes here
 
 %   Detailed explanation goes here
@@ -26,12 +26,12 @@ ds_tau = 6.*tau - 6*tau.^2;
 
 % possible time parametrization of x and its derivatives
 xRef = x0 + (x1-x0).*s_tau; 
-dxRef_t = 1./T.*(x1-x0).*ds_tau;
+dxRef_t = 1./T.*(x1-x0).*ds_tau; % x dot
 %d2xRef = 1./T.^2.*(x1-x0).*d2s_tau;
 
 % helper variable to derive the polynomial
 x_til = xRef - x0;
-dx_til = dxRef_t - x0; 
+%dx_til = dxRef_t - x0; 
 
 % polynomial with time parametrization 
 yRef = a.*x_til.^5 + b.*x_til.^4 + c.*x_til.^3 + d.*x_til.^2 + e.*x_til.^1 + f.*x_til.^0;

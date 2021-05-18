@@ -1,5 +1,5 @@
 
-function dState = Vehicle(State,dxRef_t,w_dash,n,Parameters)
+function dState = Vehicle(State,w,w_dash,Parameters)
 %VEHICLE Summary of this function goes here
 %   Detailed explanation goes here
 L = Parameters.L; 
@@ -9,12 +9,14 @@ y = State(2);
 theta = State(3);
 xi = State(4); 
 
-%
+% is it possible to pass w?
+w1 = w(1);
 w1_dash = w_dash(1);
 w2_dash = w_dash(2);
 
 % define velocity v
-v = xi.*dxRef_t.*n; 
+v = xi.*w1_dash./w1; 
+xi*n*
 
 % dState Vector
 dState(1,1) = v.*cos(theta);      % dx

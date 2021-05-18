@@ -56,7 +56,7 @@ T = 5;
 k0 = 1; 
 k1 = 2; 
 
-% initial definition of controller state
+
 xi = 1; 
 
 Parameters.coef=coef; 
@@ -75,7 +75,7 @@ for t=0:0.01:T
     [xRef(i), ~, ~, yRef(i), ~, ~] = CalcRefValues(t, Parameters);
 end
 
-rh
+
 % solve ODE
 [t,State] = ode45(@ODEFunc, [0,T], [x0, y0, theta0, xi],[], Parameters); 
 
