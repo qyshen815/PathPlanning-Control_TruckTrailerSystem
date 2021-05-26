@@ -75,12 +75,12 @@ for t=0:0.01:T
     [xRef(i), ~, ~, yRef(i), ~, ~] = CalcRefValues(t, Parameters);
 end
 
-rh
+
 % solve ODE
 [t,State] = ode45(@ODEFunc, [0,T], [x0, y0, theta0, xi],[], Parameters); 
 
 % plot resulting trajectory of the vehicle
-%{
+
 figure(1)
 plot(t, State(:,1)); 
 xlabel("t")
@@ -90,7 +90,7 @@ figure(2)
 plot(t, State(:,2)); 
 xlabel("t")
 ylabel("y")
-%}
+
 
 figure(3)
 plot(State(:,1), State(:,2)); 

@@ -1,11 +1,11 @@
 function [d4xref_dsigma4, d4yref_dsigma4] = Fourth_Derivatives_of_References(dyx, dyxx, dyxxx, dyxxxx)
 
-%Calculates the fourth derivative of the trajectory subject to the arclength (x'''' and y''''')
+%Calculates the fourth derivative of the trajectory subject to the arclength (x'''' and y'''')
 
 % Inputs: 1.,2.,3. and 4. derivative of the reference polynomial subject to
 % x, ( dyx, dyxx, dyxxx, dyxxxx )
 
-% Outputs: x'''' and y'''''
+% Outputs: x'''' and y''''
 
 eta = sqrt(1 + dyx^2);
 
