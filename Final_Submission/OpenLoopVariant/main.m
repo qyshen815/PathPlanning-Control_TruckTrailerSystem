@@ -25,40 +25,43 @@ d0 = 2;
 % distance between truck's rear axle and trailer's axle
 d1 = 3; 
 
-% Define and initialize variables
+% Define and initialize variables 
+% maybe define a start and end struct
 % initial pose
-x0 = 1; 
-y0 = 1; 
+x0_s = 1; 
+y0_s = 1; 
 
-theta0_d = 0;
-theta0 = theta0_d*2*pi/360;
+theta0_s_d = 0;
+theta0_s = theta0_s_d*2*pi/360;
 
-theta1_d = 0;
-theta1 = theta1_d*2*pi/360;
+theta1_s_d = 0;
+theta1_s = theta1_s_d*2*pi/360;
 
-phi0_d = 0; 
-phi0 = phi0_d*2*pi/360; 
-%v0 = 1;
+phi_s_d = 0; 
+phi_s = phi_s_d*2*pi/360; 
+v0 = 1;
 
 xi_1 = 1;
 xi_2 = 1;
 xi_3 = 1; 
 
 % final pose
-%x1 = 10; 
-%y1 = 10;  
-%theta1_d = 0;
-%theta1 = theta1_d*2*pi/360;
-%phi1_d = 0; 
-%phi1 = phi1_d*2*pi/360; 
-%v1 = 1;
+x0_e = 10; 
+y0_e = 10;  
+theta0_e_d = 0;
+theta0_e = theta0_e_d*2*pi/360;
+theta1_e_d = 0;
+theta1_e = theta1_e_d*2*pi/360;
+phi_e_d = 0; 
+phi_e = phi_e_d*2*pi/360; 
+v1 = 1;   % maybe not necessary due to determination in pathPlanner
 
 % Build the vectors for initial and final pose of the vehicle
-state_x0 = [x0, y0, theta0, theta1, phi0, xi_1, xi_2, xi_3];
-%state_x1 = [x1, y1, theta1, phi1, v1];
+state_x0 = [x0_s, y0_s, theta0_s, theta1_s, phi_s, v0];
+state_x1 = [x0_e, y0_e, theta0_e, theta1_e, phi_e, v1];
 
 % Function call => get polynomial coefficients for reference trajectory
-coef = PathPlanner1(state_x0,state_x1,L);
+coef = PathPlanner(state_x0,state_x1,d0,d1);
 
 % Predefine time span T - Travel Time
 T = 5;
@@ -94,7 +97,8 @@ end
 
 % solve ODE
 % Y_State?
-[t,State] = ode45(@ODEFunc, [0,T], state_x0,[], Parameters); 
+% Ausgänge evtl erweitern für Referenzwerte und Pose
+[t,State] = ode45(@ODEFunc, [0,T], [x0_s, y0_s, theta0_s, theta1_s, phi_s,  xi_1, xi_2, xi_3] ,[], Parameters); 
 
 % plot resulting trajectory of the vehicle
 %{

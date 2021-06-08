@@ -1,5 +1,5 @@
 
-function [dState, y_T] = ODEFunc(t, State, Parameters)
+function dState = ODEFunc(t, State, Parameters)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
