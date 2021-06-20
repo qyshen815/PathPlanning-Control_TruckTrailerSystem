@@ -19,10 +19,12 @@ function dState = ODEFunc(t, State, Parameters)
     %%
     % Controller State
     % x_C equals xi vector [xi_1, xi_2, xi_3]
+    x_C = State(6:8); 
     dx_C = ControllerState(w, eta, xRef_dot, x_C); 
     
     %% 
     %
+    x_T = State(1:5); 
     u = TimeReparametrization(w, eta, xRef_dot, x_T, x_C); 
     
     %%

@@ -7,8 +7,8 @@ function y_T = NonlinearOutputFunction(State, Parameters)
 
 % the coordinates of the center of the trailer's axle provide a flat output
 
-% initialize necessary values for formular implementation
-d_1 = Parameters.d_1;
+% initialize necessary values for formula implementation
+d_1 = Parameters.d1;
 x_0 = State(1); 
 y_0 = State(2); 
 theta_1 = State(3);

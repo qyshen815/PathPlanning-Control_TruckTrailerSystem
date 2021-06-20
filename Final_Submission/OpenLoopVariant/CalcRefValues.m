@@ -10,6 +10,9 @@ c = Parameters.coef(3);
 d = Parameters.coef(4);
 e = Parameters.coef(5);
 f = Parameters.coef(6);
+g = Parameters.coef(7);
+h = Parameters.coef(8);
+
 x0 = Parameters.x0;
 x1 = Parameters.x1; 
 T = Parameters.T; 
@@ -34,16 +37,19 @@ x_til = xRef - x0;
 %dx_til = dxRef_t - x0; 
 
 % polynomial with time parametrization 
-yRef = a.*x_til.^5 + b.*x_til.^4 + c.*x_til.^3 + d.*x_til.^2 + e.*x_til.^1 + f.*x_til.^0;
+yRef =   a.*x_til.^7      + b.*x_til.^6      + c.*x_til.^5      + d.*x_til.^4     + e.*x_til.^3    + f.*x_til.^2    + g.*x_til.^1 + h;
 
 % first derivative without time parameter
-dyx = 5.*a.*x_til.^4 + 4.*b.*x_til.^3 + 3.*c.*x_til.^2 + 2.*d.*x_til + e;
+dyx =    7.*a.*x_til.^6   + 6.*b.*x_til.^5   + 5.*c.*x_til.^4   + 4.*d.*x_til.^3  + 3.*e.*x_til.^2 + 2.*f.*x_til.^1 + g; 
+
 % second derivative without time parameter
-dyxx = 20.*a.*x_til.^3 + 12.*b.*x_til.^2 + 6.*c.*x_til + 2.*d; 
+dyxx =   42.*a.*x_til.^5  + 30.*b.*x_til.^4  + 20.*c.*x_til.^3  + 12.*d.*x_til.^2 + 6.*e.*x_til.^1 + 2.*f;
+
 % third derivative without time parameter
-dyxxx = 60.*a.*x_til.^2 + 24.*b.*x_til + 6.*c;
+dyxxx =  210.*a.*x_til.^4 + 120.*b.*x_til.^3 + 60.*c.*x_til.^2  + 24.*d.*x_til.^1 + 6.*e;
+
 % fourth derivative without time parameter
-dyxxxx = 120.*a.*x_til + 24.*b;
+dyxxxx = 840.*a.*x_til.^3 + 360.*b.*x_til.^2 + 120.*c.*x_til.^1 + 24.*d;
 
 % determine eta
 eta = sqrt(1 + dyx^2); 

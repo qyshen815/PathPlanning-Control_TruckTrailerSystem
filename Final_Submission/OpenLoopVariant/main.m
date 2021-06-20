@@ -39,7 +39,7 @@ theta1_s = theta1_s_d*2*pi/360;
 
 phi_s_d = 0; 
 phi_s = phi_s_d*2*pi/360; 
-v0 = 1;
+v0 = 1; % maybe not necessary due to determination in pathPlanner
 
 xi_1 = 1;
 xi_2 = 1;
@@ -79,26 +79,28 @@ Parameters.coef=coef;
 Parameters.d0 = d0; 
 Parameters.d1 = d1; 
 Parameters.T = T; 
-Parameters.x0 = x0; 
-Parameters.x1 = x1; 
+Parameters.x0 = x0_s;   % here x0 is x-coordinate of start pose
+Parameters.x1 = x0_e;   % here x1 is x-coordinate of end pose 
 Parameters.k0 = k0; 
 Parameters.k1 = k1; 
 Parameters.k2 = k2; 
 Parameters.k3 = k3; 
 
-% test
 % reference trajectory for plotting
+%{
 i=0;
 for t=0:0.01:T
     i=i+1;
     [xRef(i), ~, ~, yRef(i), ~, ~] = CalcRefValues(t, Parameters);
 end
-
+%}
 
 % solve ODE
 % Y_State?
 % Ausgänge evtl erweitern für Referenzwerte und Pose
-[t,State] = ode45(@ODEFunc, [0,T], [x0_s, y0_s, theta0_s, theta1_s, phi_s,  xi_1, xi_2, xi_3] ,[], Parameters); 
+odeStartState = [x0_s, y0_s, theta0_s, theta1_s, phi_s,  xi_1, xi_2, xi_3];
+
+[t,State] = ode45(@ODEFunc, [0,T], odeStartState ,[], Parameters); 
 
 % plot resulting trajectory of the vehicle
 %{
@@ -112,11 +114,11 @@ plot(t, State(:,2));
 xlabel("t")
 ylabel("y")
 %}
-
 figure(3)
 plot(State(:,1), State(:,2)); 
 hold on
 % plot xref, yref -> correct if maximum overlapping
-plot(xRef, yRef); 
-xlabel("x")
-ylabel("y")
+%plot(xRef, yRef); 
+%xlabel("x")
+%ylabel("y")
+

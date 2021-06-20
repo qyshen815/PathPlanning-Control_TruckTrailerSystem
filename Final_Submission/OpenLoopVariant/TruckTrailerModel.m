@@ -6,8 +6,8 @@ function dx_T = TruckTrailerModel(x_T, u, Parameters)
 % dx_T = f(x_T, u) 
 
 % initialize necessary values for formular implementation
-d_0 = Parameters.d_0;
-d_1 = Parameters.d_1;
+d_0 = Parameters.d0;
+d_1 = Parameters.d1;
 theta_0 = x_T(3); 
 theta_1 = x_T(4);
 phi = x_T(5); 

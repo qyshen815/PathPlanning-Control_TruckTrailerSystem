@@ -1,6 +1,0 @@
-function [State, dState] = StateConcatenate_OL(x_T, x_C, dx_T, dx_C);
-%STATECONCATENATE_OL Summary of this function goes here
-%   Detailed explanation goes here
-State = [
-end
-
