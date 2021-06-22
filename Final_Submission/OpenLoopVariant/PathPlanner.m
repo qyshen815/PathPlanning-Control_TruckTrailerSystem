@@ -9,8 +9,8 @@ function coef = PathPlanner(state_x0,state_x1,d0,d1)
 %   state_x1 = final pose
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%state_x0 = [x0_s, y0_s, theta0_s, theta1_s, phi_s, v0];
-%state_x1 = [x0_e, y0_e, theta0_e, theta1_e, phi_e, v1];
+%state_x0 = [x0_s, y0_s, theta0_s, theta1_s, phi_s];
+%state_x1 = [x0_e, y0_e, theta0_e, theta1_e, phi_e];
 
 
 % Inititalize intital state vector - start
@@ -28,9 +28,11 @@ theta1_e = state_x1(4)*360/(2*pi);
 phi_e = state_x1(4)*360/(2*pi);
 
 % start
+% yRef and its first, second and third derivative
 yRef_val_s = PathPlannerHelper(x0_s, y0_s, theta0_s, theta1_s, phi_s, d0, d1);
 
 % end
+% yRef and its first, second and third derivative
 yRef_val_e = PathPlannerHelper(x0_e, y0_e, theta0_e, theta1_e, phi_e, d0, d1);
 
 % Coefficents of the polynomial

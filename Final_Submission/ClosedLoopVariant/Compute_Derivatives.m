@@ -18,7 +18,7 @@ function [yx, yxx, yxxx] = ComputeDerivatives(xs,d0,d1)
     kappa1 = 1./d1 .* tan(xs(3)-xs(4));
     kappa0 = 1./d0 .* tan(xs(5));
   
-    yx = tan( xs(4) ); % slope of  trailer
+    yx = tan( xs(4) ); % slope of  trailer %tan(theta1)
 
     gamma1 = 1 + yx.^2;
     

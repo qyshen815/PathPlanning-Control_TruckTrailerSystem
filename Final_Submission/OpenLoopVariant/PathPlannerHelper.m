@@ -10,8 +10,7 @@ theta0_x = 1/d0 * eta/cos(theta0 - theta1) * tan(phi);
 theta1_x = 1/d1 * eta * tan(theta0 - theta1);
 
 % second: Express yRef, yRef_x
-yRef = y0 - d1*sin(theta1); % with regard to rear axle of the truck
-%yRef_s = % with regard to rear axle of trailer
+yRef = y0 - d1*sin(theta1); % with regard to rear axle of trailer
 yRef_x = tan(theta1); 
 yRef_xx = eta^3 * (1/d1) * tan(theta0 - theta1); 
 

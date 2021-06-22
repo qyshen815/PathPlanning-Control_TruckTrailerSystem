@@ -10,7 +10,7 @@ function dState = ODEFunc(t, State, Parameters)
     
     %%
     % steering Law calculate input reference values v and phi
-    ny = Steering_StabControl(Ref,y_T, Parameters); 
+    ny = Steering_StabControl(Ref,State,y_T, Parameters); 
     
     %%
     % 
