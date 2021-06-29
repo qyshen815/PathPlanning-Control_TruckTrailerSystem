@@ -2,7 +2,7 @@
 function dState = ODEFunc(t, State, Parameters)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-
+    %y_T = [0;0]; 
     
     %%
     % calculate reference values of x and y

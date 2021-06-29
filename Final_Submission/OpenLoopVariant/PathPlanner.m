@@ -16,16 +16,16 @@ function coef = PathPlanner(state_x0,state_x1,d0,d1)
 % Inititalize intital state vector - start
 x0_s = state_x0(1);
 y0_s = state_x0(2);
-theta0_s = state_x0(3)*360/(2*pi);
-theta1_s = state_x0(4)*360/(2*pi);
-phi_s = state_x0(4)*360/(2*pi);
+theta0_s = state_x0(3);
+theta1_s = state_x0(4);
+phi_s = state_x0(4);
 
 % Inititalize final state vector - end
 x0_e = state_x1(1);
 y0_e = state_x1(2);
-theta0_e = state_x1(3)*360/(2*pi);
-theta1_e = state_x1(4)*360/(2*pi);
-phi_e = state_x1(4)*360/(2*pi);
+theta0_e = state_x1(3);
+theta1_e = state_x1(4);
+phi_e = state_x1(4);
 
 % start
 % yRef and its first, second and third derivative

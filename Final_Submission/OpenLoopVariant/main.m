@@ -34,19 +34,20 @@ y0_s = 0;
 theta0_s_d = 0;
 theta0_s = theta0_s_d*2*pi/360;
 
-theta1_s_d = 0;
+theta1_s_d = 20;
 theta1_s = theta1_s_d*2*pi/360;
 
 phi_s_d = 0; 
 phi_s = phi_s_d*2*pi/360; 
 
+% stationärer Zdustand
 xi_1 = 1;
-xi_2 = 1;
-xi_3 = 1; 
+xi_2 = 0;
+xi_3 = 0; 
 
 % final pose
 x0_e = 30; 
-y0_e = 100;  
+y0_e = 30;  
 theta0_e_d = 0;
 theta0_e = theta0_e_d*2*pi/360;
 theta1_e_d = 0;
@@ -100,6 +101,13 @@ odeStartState = [x0_s, y0_s, theta0_s, theta1_s, phi_s,  xi_1, xi_2, xi_3];
 
 [t,State] = ode45(@ODEFunc, [0,T], odeStartState ,[], Parameters); 
 
+% determine to trailer position orientation
+for i=1:length(t)
+    x1 = State(i,1) - d1*cos(State(i,4));
+    y1 = State(i,2) - d1*sin(State(i,4)); 
+end
+
+
 % plot resulting trajectory of the vehicle
 %{
 figure(1)
@@ -113,10 +121,11 @@ xlabel("t")
 ylabel("y")
 %}
 figure(3)
-plot(State(:,1), State(:,2)); 
+%plot(x1, y1); 
 hold on
-% plot xref, yref -> correct if maximum overlapping
+%plot xref, yref -> correct if maximum overlapping
 plot(xRef, yRef); 
 xlabel("x")
 ylabel("y")
+axis equal
 

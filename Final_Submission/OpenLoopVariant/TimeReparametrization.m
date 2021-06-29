@@ -12,6 +12,7 @@ w_2 = w(2);
 u_1 = xi_1/cos(theta_0 - theta_1) * eta * xRef_dot; 
 u_2 = w_2 * eta * xRef_dot;
 
+
 % define input vector u for truck-trailer-model
 u = [u_1; 
      u_2]; 

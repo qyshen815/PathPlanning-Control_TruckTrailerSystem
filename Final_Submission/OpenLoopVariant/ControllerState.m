@@ -16,6 +16,6 @@ dxi_3 = w_1*eta*xRef_dot;
 dx_C = [dxi_1;
         dxi_2;
         dxi_3];
-
+    
 end
 
