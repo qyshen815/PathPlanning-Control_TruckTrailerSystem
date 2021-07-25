@@ -9,7 +9,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% clear former data
+% Clear former data
 clear
 close
 clc
@@ -30,21 +30,21 @@ d1 = 3;
 % Initial/start pose
 start.x0 = 0;    % X-Coordinate of Truck's rear axle
 start.y0 = 0;    % Y-Coordinate of Truck's rear axle
-theta0_s_d = 40;  % Orientation angle of Truck in degree
+theta0_s_d = 0;  % Orientation angle of Truck in degree
 start.theta0 = theta0_s_d*2*pi/360;
-theta1_s_d = 10; % Orientation angle of Trailer in degree
+theta1_s_d = 0; % Orientation angle of Trailer in degree
 start.theta1 = theta1_s_d*2*pi/360;
-phi_s_d = 20;     % Steering angle of Truck in degree
+phi_s_d = 15;     % Steering angle of Truck in degree
 start.phi = phi_s_d*2*pi/360;  
 
 % Final/end pose
 final.x0 = 100;   % X-Coordinate of Truck's rear axle
-final.y0 = 100;   % Y-Coordinate of Truck's rear axle
-theta0_e_d = 33;  % Orientation angle of Truck in degree
+final.y0 = 30;   % Y-Coordinate of Truck's rear axle
+theta0_e_d = 0;  % Orientation angle of Truck in degree
 final.theta0 = theta0_e_d*2*pi/360;
-theta1_e_d = 11;  % Orientation angle of Trailer in degree
+theta1_e_d = 0;  % Orientation angle of Trailer in degree
 final.theta1 = theta1_e_d*2*pi/360;
-phi_e_d = 22;     % Steering angle of Truck in degree
+phi_e_d = 35;     % Steering angle of Truck in degree
 final.phi = phi_e_d*2*pi/360; 
 
 % Build the vectors for initial and final pose of the vehicle
@@ -111,8 +111,18 @@ for i=1:length(t)
     y1(i) = State(i,2) - d1*sin(State(i,4));
 end
 
-% Plot resulting and reference trajectory (check overlapping)
+%% VISUALIZATION
+
+% Moving Truck/Trailer visualization
 figure(1)
+MovingPlot(State, start, final, T, Parameters);
+axis equal
+grid on
+
+%%
+%{
+% Plot resulting and reference trajectory (check overlapping)
+figure(2)
 plot(State(:,1), State(:,2), 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (truck perspective)
 hold on
 plot(x1,y1, 'Color', [0 0 0.5]); % Resulting trajectory of Truck/Trailer System (Trailer perspective)
@@ -125,3 +135,52 @@ title("Trajectory of Truck/Trailer Model between Start and Final Pose")
 legend('Resulting Trajectory Truck', 'Resulting Trajectory Trailer', 'Reference Trajectory', 'Location', 'northeastoutside')
 axis equal
 grid on 
+
+xt = State(:,1);
+yt = State(:,2); 
+
+% First painting attempt
+figure(3) 
+plot(xt, yt, 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (truck perspective)
+hold on
+plot(x1, y1, 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (trailer perspective)
+hold on
+
+%% Start position
+%{
+% Define rectangles (shape of truck)
+shape0 = polyshape([xt(1)-0.5 xt(1)-0.5 xt(1)+3.5 xt(1)+3.5], [yt(1)+1 yt(1)-1 yt(1)-1 yt(1)+1]);
+plot(shape0)
+hold on
+plot([xt(1) xt(1)+3], [yt(1) yt(1)], 'Color', 'k', 'LineWidth', 2); 
+
+plot([xt(1) xt(1)], [yt(1)-1 yt(1)+1], 'Color', 'k', 'LineWidth', 2); % Rear Axle
+plot([xt(1)+3 xt(1)+3], [yt(1)-1 yt(1)+1], 'Color', 'k', 'LineWidth', 2); % Front Axle
+
+plot([xt(1)-0.4 xt(1)+0.4], [yt(1)-1 yt(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Rear Tyre
+plot([xt(1)-0.4 xt(1)+0.4], [yt(1)+1 yt(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Rear Tyre
+plot([xt(1)+2.6 xt(1)+3.4], [yt(1)-1 yt(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Front Tyre
+plot([xt(1)+2.6 xt(1)+3.4], [yt(1)+1 yt(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Front Tyre
+
+% Define rectangles (shape of trailer)
+shape0 = polyshape([x1(1)-0.5 x1(1)-0.5 x1(1)+1.5 x1(1)+1.5], [y1(1)+1 y1(1)-1 y1(1)-1 y1(1)+1]);
+plot(shape0)
+hold on
+plot([x1(1) xt(1)], [y1(1) yt(1)], 'Color', 'k', 'LineWidth', 2); 
+
+plot([x1(1) x1(1)], [y1(1)-1 y1(1)+1], 'Color', 'k', 'LineWidth', 2); % Rear Axle
+
+plot([x1(1)-0.4 x1(1)+0.4], [y1(1)-1 y1(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Rear Tyre
+plot([x1(1)-0.4 x1(1)+0.4], [y1(1)+1 y1(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Rear Tyre
+
+axis equal
+grid on
+%}
+refPointTruck = [xt(5500), yt(5500)];
+refPointTrailer = [x1(5500), y1(5500)];
+PlotState(refPointTruck, refPointTrailer, State)
+
+axis equal
+grid on
+%}
+
