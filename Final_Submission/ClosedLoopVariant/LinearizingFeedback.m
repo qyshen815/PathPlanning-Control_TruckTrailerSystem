@@ -29,7 +29,7 @@ LD = Truck_1T_LieDeriv(x_truck, x_ctrl, d0, d1);
 % Define matrix A
 A = [LD.L_g1_Lf3_h1, LD.L_g2_Lf3_h1;
      LD.L_g1_Lf3_h2, LD.L_g2_Lf3_h2];
-
+ 
 % Define vector c
 c = [LD.Lf4_h1; 
      LD.Lf4_h2]; 

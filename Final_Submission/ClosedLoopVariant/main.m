@@ -34,17 +34,17 @@ theta0_s_d = 0;  % Orientation angle of Truck in degree
 start.theta0 = theta0_s_d*2*pi/360;
 theta1_s_d = 0; % Orientation angle of Trailer in degree
 start.theta1 = theta1_s_d*2*pi/360;
-phi_s_d = 15;     % Steering angle of Truck in degree
+phi_s_d = 0;     % Steering angle of Truck in degree
 start.phi = phi_s_d*2*pi/360;  
 
 % Final/end pose
-final.x0 = 100;   % X-Coordinate of Truck's rear axle
+final.x0 = 30;   % X-Coordinate of Truck's rear axle
 final.y0 = 30;   % Y-Coordinate of Truck's rear axle
 theta0_e_d = 0;  % Orientation angle of Truck in degree
 final.theta0 = theta0_e_d*2*pi/360;
 theta1_e_d = 0;  % Orientation angle of Trailer in degree
 final.theta1 = theta1_e_d*2*pi/360;
-phi_e_d = 35;     % Steering angle of Truck in degree
+phi_e_d = 0;     % Steering angle of Truck in degree
 final.phi = phi_e_d*2*pi/360; 
 
 % Build the vectors for initial and final pose of the vehicle
@@ -101,9 +101,18 @@ xi_3 = 0;
 % Solve ODE
 odeStartState = [start.x0, start.y0, start.theta0, start.theta1, start.phi,...
                  xi_1, xi_2, xi_3];
-             
+                     
 % Central function referencing to the other m-files via ODEFunc
 [t, State] = ode45(@ODEFunc, [0,T], odeStartState, [], Parameters); 
+
+% Backward Motion
+%w = eig(State)
+
+% Determine the Trucks's position based on State vector
+for i=1:length(t)
+    x0(i) = State(i,1);
+    y0(i) = State(i,2);
+end
 
 % Determine the Trailer's position based on the Truck's coordinates
 for i=1:length(t)
@@ -113,74 +122,52 @@ end
 
 %% VISUALIZATION
 
-% Moving Truck/Trailer visualization
+% Plot 1: Forward Motion - Moving Truck/Trailer
 figure(1)
 MovingPlot(State, start, final, T, Parameters);
-axis equal
+
+%{
+% Plot 2: Configuration View - Discrete Points of Truck/Trailer
+figure(2)
+p1 = 1; 
+p2 = round(0.25*length(State));
+p3 = round(0.5*length(State));
+p4 = round(0.75*length(State));
+p5 = length(State);
+p = [p1, p2, p3, p4, p5]; % Discrete points of plotting Truck/Trailer visualization
+for i = 1 : length(p)
+    PlotState([x0(p(i)), y0(p(i))], [x1(p(i)), y1(p(i))], State, p(i))
+end
+hold on
+plot(x0, y0, 'Color', 'r');  % Resulting trajectory of Truck/Trailer System (truck perspective)
+hold on
+plot(x1, y1, 'Color', 'b');  % Resulting trajectory of Truck/Trailer System (Trailer perspective)
+title('Plot 2: Configuration View - Discrete Points of Truck/Trailer')
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
 grid on
 
-%%
-%{
-% Plot resulting and reference trajectory (check overlapping)
-figure(2)
-plot(State(:,1), State(:,2), 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (truck perspective)
+
+% Plot 3: Reference Trajectory vs Resulting Trajectories (check overlapping)
+figure(3) 
+plot(x0, y0, 'Color', 'r'); % Resulting trajectory of Truck/Trailer System (Truck perspective)
 hold on
-plot(x1,y1, 'Color', [0 0 0.5]); % Resulting trajectory of Truck/Trailer System (Trailer perspective)
+plot(x1, y1, 'Color', 'b'); % Resulting trajectory of Truck/Trailer System (Trailer perspective)
 hold on
 plot(xRef, yRef, 'Color', [0 0.5 0]); % Reference trajectory of Truck/Trailer System
-xlabel("x")
-ylabel("y")
-title("Trajectory of Truck/Trailer Model between Start and Final Pose")
-%legend('Resulting Trajectory', 'Reference Trajectory', 'Location', 'northeastoutside')
+title('Plot 3: Reference Trajectory vs Resulting Trajectories')
+xlabel('x-coordinate')
+ylabel('y-coordinate')
 legend('Resulting Trajectory Truck', 'Resulting Trajectory Trailer', 'Reference Trajectory', 'Location', 'northeastoutside')
 axis equal
-grid on 
+grid on
 
-xt = State(:,1);
-yt = State(:,2); 
-
-% First painting attempt
-figure(3) 
-plot(xt, yt, 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (truck perspective)
-hold on
-plot(x1, y1, 'Color', [0.5 0 0]); % Resulting trajectory of Truck/Trailer System (trailer perspective)
-hold on
-
-%% Start position
-%{
-% Define rectangles (shape of truck)
-shape0 = polyshape([xt(1)-0.5 xt(1)-0.5 xt(1)+3.5 xt(1)+3.5], [yt(1)+1 yt(1)-1 yt(1)-1 yt(1)+1]);
-plot(shape0)
-hold on
-plot([xt(1) xt(1)+3], [yt(1) yt(1)], 'Color', 'k', 'LineWidth', 2); 
-
-plot([xt(1) xt(1)], [yt(1)-1 yt(1)+1], 'Color', 'k', 'LineWidth', 2); % Rear Axle
-plot([xt(1)+3 xt(1)+3], [yt(1)-1 yt(1)+1], 'Color', 'k', 'LineWidth', 2); % Front Axle
-
-plot([xt(1)-0.4 xt(1)+0.4], [yt(1)-1 yt(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Rear Tyre
-plot([xt(1)-0.4 xt(1)+0.4], [yt(1)+1 yt(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Rear Tyre
-plot([xt(1)+2.6 xt(1)+3.4], [yt(1)-1 yt(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Front Tyre
-plot([xt(1)+2.6 xt(1)+3.4], [yt(1)+1 yt(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Front Tyre
-
-% Define rectangles (shape of trailer)
-shape0 = polyshape([x1(1)-0.5 x1(1)-0.5 x1(1)+1.5 x1(1)+1.5], [y1(1)+1 y1(1)-1 y1(1)-1 y1(1)+1]);
-plot(shape0)
-hold on
-plot([x1(1) xt(1)], [y1(1) yt(1)], 'Color', 'k', 'LineWidth', 2); 
-
-plot([x1(1) x1(1)], [y1(1)-1 y1(1)+1], 'Color', 'k', 'LineWidth', 2); % Rear Axle
-
-plot([x1(1)-0.4 x1(1)+0.4], [y1(1)-1 y1(1)-1], 'Color', 'k', 'LineWidth', 4); % Right Rear Tyre
-plot([x1(1)-0.4 x1(1)+0.4], [y1(1)+1 y1(1)+1], 'Color', 'k', 'LineWidth', 4); % Left Rear Tyre
-
-axis equal
+% Plot 4: Add on - Backward Motion
+%figure(4) 
+%title('Plot 4: Add on - Backward Motion')
+xlabel('x-coordinate')
+ylabel('y-coordinate')
+axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
 grid on
 %}
-refPointTruck = [xt(5500), yt(5500)];
-refPointTrailer = [x1(5500), y1(5500)];
-PlotState(refPointTruck, refPointTrailer, State)
-
-axis equal
-grid on
-%}
-

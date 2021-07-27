@@ -18,8 +18,8 @@ function SingleElementPlot_Steering(theta, phi, refPoint, delta_x_s, delta_y_s, 
 newRefPoint = [x_e1, y_e1]; 
 
 % Rotation (steering + orientation angle) according to the new reference point
-[x_s2, y_s2] = CallRotationMatrix(phi+theta, newRefPoint, delta_x_s, delta_y_s)  
-[x_e2, y_e2] = CallRotationMatrix(phi+theta, newRefPoint, delta_x_e, delta_y_e)
+[x_s2, y_s2] = CallRotationMatrix(phi+theta, newRefPoint, delta_x_s, delta_y_s);
+[x_e2, y_e2] = CallRotationMatrix(phi+theta, newRefPoint, delta_x_e, delta_y_e);
 
 % Plot the single element with implemented steering
 plot([x_s2 x_e2], [y_s2 y_e2], 'LineWidth', 2, 'color', 'black')

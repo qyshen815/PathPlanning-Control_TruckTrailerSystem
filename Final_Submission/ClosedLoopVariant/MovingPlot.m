@@ -45,6 +45,9 @@ for k = 1 : stepWidth : endLoop
    hold on
    plot(x1_mv(1:k),y1_mv(1:k), 'LineWidth', 1, 'Color', 'b')
    
+   title('Plot 1: Forward Motion - Moving Truck/Trailer')
+   xlabel('x-coordinate')
+   ylabel('y-coordinate')
    axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
    grid on
    pause(0.02) % Enter frequency
@@ -67,8 +70,11 @@ hold on
 plot(x0_mv(1:endLoop),y0_mv(1:endLoop), 'Color', 'r')     % Final trajectory Truck
 hold on
 plot(x1_mv(1:endLoop),y1_mv(1:endLoop), 'Color', 'b')     % Final trajectory Trailer
+
+title('Plot 1: Forward Motion - Moving Truck/Trailer')
+xlabel('x-coordinate')
+ylabel('y-coordinate')
 axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10])     % Scaling axis 
-axis equal
 grid on
 
 end
