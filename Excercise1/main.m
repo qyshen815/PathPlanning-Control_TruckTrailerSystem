@@ -30,7 +30,7 @@ phi0_d = 0;
 phi0 = phi0_d*2*pi/360; 
 v0 = 1;
 
-x1 = 100; 
+x1 = -30; 
 y1 = -30;  
 theta1_d = 0;
 theta1 = theta1_d*2*pi/360;
@@ -64,7 +64,7 @@ dfx = gradient(fx)./gradient(x);
 d2fx = gradient(dfx)./gradient(x); 
 
 
-
+%{
 poly = [a b c d e f];
 
 % Helper variables
@@ -123,7 +123,7 @@ shape3 = polyshape([x3_u+1 x3_u+1 x3_o+1 x3_o+1], [f3_u+5 f3_u-5 f3_u-5 f3_u+5])
 r3 = rotate(shape3, theta1_d, [x1 y1]);
 
 % plot the polynoms
-%{
+
 figure(1) 
 plot(x,fx); 
 hold on; 
@@ -142,7 +142,7 @@ title('Simple Path Planning');
 grid on;
 hold on;
 %plot(x,dfx)
-
+%{
 %rectangle('Position', [x0-2 y0-5 20 10]);
 plot([r0 r1 r2 r3]);
 
@@ -227,3 +227,4 @@ refPoint = [x1,y1];
 plot_state(refPoint, theta1, 0)
 
 axis equal;
+%}

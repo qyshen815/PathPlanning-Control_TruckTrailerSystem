@@ -69,13 +69,10 @@ state_x1 = [final.x0, final.y0, final.theta0, final.theta1, final.phi];
 coef = PathPlanner(state_x0, state_x1, d0, d1);
 
 % Predefine time span T - Travel Time
-T = 10;
+T = 5;
 
-% Weighting factors for state feedback based on Hurwitz criterion
-% Assumptions for control gains (precision vs performance): 
-% - k0      --> 0
-% - k1 & k2 --> inf
-% - k3      --> 1
+% Weighting factors for state feedback (random init) 
+% Control gains -> only needed for closed loop
 k0 = 0.00001; 
 k1 = 1000; 
 k2 = 1000; 
@@ -98,13 +95,6 @@ Parameters.k1 = k1;
 Parameters.k2 = k2; 
 Parameters.k3 = k3; 
 
-% Steady controller states
-xi_1 = 1;
-xi_2 = 0;
-xi_3 = 0;
-
-%% Trajectory calculation of stabilizing feedback control for Truck/Trailer system
-
 % Reference trajectory for plotting tests 
 % Auxiliary graph for comparison with the resulting trajectory
 i=0;
@@ -114,6 +104,11 @@ for t=0:0.01:T
     xRef(i) = Ref(i).xRef;
     yRef(i) = Ref(i).yRef;
 end
+
+% Steady controller states
+xi_1 = 1;
+xi_2 = 0;
+xi_3 = 0;
 
 % Solve ODE
 odeStartState = [start.x0, start.y0, start.theta0, start.theta1, start.phi,...
@@ -137,14 +132,14 @@ for i=1:length(t)
     y1(i) = State(i,2) - d1*sin(State(i,4));
 end
 
-%% Visualization 
+%% VISUALIZATION
 
 % Plot 1: Forward Motion - Moving Truck/Trailer
 figure(1)
 set(gcf, 'Position', get(0, 'Screensize'));
 MovingPlot(State, start, final, T, Parameters);
 
-
+%{
 % Plot 2: Configuration View - Discrete Points of Truck/Trailer
 figure(2)
 p1 = 1; 
@@ -180,7 +175,6 @@ legend('Resulting Trajectory Truck', 'Resulting Trajectory Trailer', 'Reference 
 axis equal
 grid on
 
-%{
 % Plot 4: Add on - Backward Motion
 %figure(4) 
 %title('Plot 4: Add on - Backward Motion')

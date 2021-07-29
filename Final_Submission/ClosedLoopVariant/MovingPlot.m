@@ -24,7 +24,7 @@ f = 1/T;
 endLoop = length(State); 
 
 % Step width of iteration
-stepWidth = round(endLoop/100); 
+stepWidth = round(endLoop/100*14/T); % Scaling step width to determine travel time
 
 %% Iterating loop for moving trajectory
 for k = 1 : stepWidth : endLoop
@@ -50,7 +50,7 @@ for k = 1 : stepWidth : endLoop
    ylabel('y-coordinate')
    axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
    grid on
-   pause(0.02) % Enter frequency
+   pause(0.1/T) % Enter frequency
    
    % Iterative plot update
    if k ~= endLoop
