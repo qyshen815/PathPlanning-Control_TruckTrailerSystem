@@ -56,15 +56,15 @@ y1 = y_T(2);    % y coordinate of the Trailer's rear axle
 
 % Tracking error dynamics
 % Difference between reference and actual values
-ex_t = xRef - x1; 
-dex_t = dxRef - dx_t;
-d2ex_t = d2xRef - d2x_t;
-d3ex_t = d3xRef - d3x_t;
+ex_t = xRef - x1
+dex_t = dxRef - dx_t
+d2ex_t = d2xRef - d2x_t
+d3ex_t = d3xRef - d3x_t
 
-ey_t = yRef - y1; 
-dey_t = dyRef - dy_t;
-d2ey_t = d2yRef - d2y_t;
-d3ey_t = d3yRef - d3y_t;
+ey_t = yRef - y1
+dey_t = dyRef - dy_t
+d2ey_t = d2yRef - d2y_t
+d3ey_t = d3yRef - d3y_t
 
 % Equations of the controller for feedback linearization (input) 
 ny_1 = Ref.d4xref_dsigma4 + k3*d3ex_t + k2*d2ex_t + k1*dex_t + k0*ex_t; 

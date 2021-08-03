@@ -24,7 +24,7 @@ x1 = Parameters.x1;
 T = Parameters.T; 
 
 % Time parametrization with helper variable tau
-tau = t/T; 
+tau = (T - t)/T; 
 
 % Defining a scaling parameter and its first derivative
 s_tau = 3*tau^2 - 2*tau^3; 
@@ -32,7 +32,7 @@ ds_tau = 6*tau - 6*tau^2;
 
 % Possible time parametrization of x and its first derivative
 xRef = x0 + (x1-x0)*s_tau; 
-xRef_dot = 1/T*(x1-x0)*ds_tau; % x dot needed as input for controller state
+xRef_dot = -1/T*(x1-x0)*ds_tau; % x dot needed as input for controller state
 
 % Polynomial with time parametrization 
 yRef =   a*xRef^7     + b*xRef^6     + c*xRef^5     + d*xRef^4    + e*xRef^3   + f*xRef^2   + g*xRef^1 + h;
@@ -62,7 +62,7 @@ d3xref_dsigma3 = -((dyxx^2) + dyx*dyxxx) / (eta^5) ...
 
 dyref_dsigma = dyx/eta; 
 d2yref_dsigma2 = dyxx/(eta^2) - ((dyx^2)*dyxx)/(eta^4); 
-d3yref_dsigma3 = dyxxx/(eta^3) + (4*(dyxx^2)*dyx)/(eta^5) ...
+d3yref_dsigma3 = dyxxx/(eta^3) - (4*(dyxx^2)*dyx)/(eta^5) ...
                 - ((dyx^2)*dyxxx)/(eta^5) + (4*(dyx^3)*(dyxx^2))/(eta^7);
             
 [d4xref_dsigma4, d4yref_dsigma4] = Fourth_Derivatives_of_References(dyx, dyxx, dyxxx, dyxxxx, eta);

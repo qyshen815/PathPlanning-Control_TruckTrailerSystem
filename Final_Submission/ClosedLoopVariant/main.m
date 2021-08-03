@@ -42,28 +42,33 @@ d1 = 3;
 
 % Define and initialize variables 
 % Initial/start pose
-start.x0 = input_start(1);    % X-Coordinate of Truck's rear axle
-start.y0 = input_start(2);    % Y-Coordinate of Truck's rear axle
+start.x1 = input_start(1);    % X-Coordinate of Truck's rear axle
+start.y1 = input_start(2);    % Y-Coordinate of Truck's rear axle
 theta0_s_d = input_start(3);  % Orientation angle of Truck in degree
 start.theta0 = theta0_s_d*2*pi/360;
 theta1_s_d = input_start(4); % Orientation angle of Trailer in degree
 start.theta1 = theta1_s_d*2*pi/360;
 phi_s_d = input_start(5);     % Steering angle of Truck in degree
 start.phi = phi_s_d*2*pi/360;  
+start.x0 = start.x1;
+start.y0 = start.y1;
 
 % Final/end pose
-final.x0 = input_final(1);   % X-Coordinate of Truck's rear axle
-final.y0 = input_final(2);   % Y-Coordinate of Truck's rear axle
+final.x1 = input_final(1);   % X-Coordinate of Truck's rear axle
+final.y1 = input_final(2);   % Y-Coordinate of Truck's rear axle
 theta0_e_d = input_final(3);  % Orientation angle of Truck in degree
 final.theta0 = theta0_e_d*2*pi/360;
 theta1_e_d = input_final(4);  % Orientation angle of Trailer in degree
 final.theta1 = theta1_e_d*2*pi/360;
 phi_e_d = input_final(5);     % Steering angle of Truck in degree
 final.phi = phi_e_d*2*pi/360; 
+final.y0 = final.y1; 
+final.x0 = final.x1; 
 
 % Build the vectors for initial and final pose of the vehicle
-state_x0 = [start.x0, start.y0, start.theta0, start.theta1, start.phi];
-state_x1 = [final.x0, final.y0, final.theta0, final.theta1, final.phi];
+% trailer
+state_x0 = [start.x1, start.y1, start.theta0, start.theta1, start.phi];
+state_x1 = [final.x1, final.y1, final.theta0, final.theta1, final.phi];
 
 % Path Planning -> get polynomial coefficients for reference trajectory
 coef = PathPlanner(state_x0, state_x1, d0, d1);
@@ -76,10 +81,18 @@ T = 10;
 % - k0      --> 0
 % - k1 & k2 --> inf
 % - k3      --> 1
-k0 = 0.00001; 
-k1 = 1000; 
-k2 = 1000; 
-k3 = 1; 
+%{
+k0 = 0; 
+k1 = 0; 
+k2 = 0; 
+k3 = 0; 
+%}
+
+k0 = 0.0625; 
+k1 = -0.75; %+-0.5
+k2 = 0.75; % 0.75 
+k3 = -2; %+-2
+
 
 % Define a set of parameters containing
 % - polynomial coeffients
@@ -91,8 +104,8 @@ Parameters.coef=coef;
 Parameters.d0 = d0; 
 Parameters.d1 = d1; 
 Parameters.T = T; 
-Parameters.x0 = start.x0;   
-Parameters.x1 = final.x0;   
+Parameters.x0 = start.x1;   
+Parameters.x1 = final.x1;   
 Parameters.k0 = k0; 
 Parameters.k1 = k1; 
 Parameters.k2 = k2; 
@@ -116,7 +129,10 @@ for t=0:0.01:T
 end
 
 % Solve ODE
-odeStartState = [start.x0, start.y0, start.theta0, start.theta1, start.phi,...
+%odeStartState = [start.x1+d1*cos(start.theta1), start.y1+d1*sin(start.theta1)-3, start.theta0, start.theta1, start.phi,...
+                % xi_1, xi_2, xi_3];
+             
+odeStartState = [final.x1+d1*cos(start.theta1), final.y1+d1*sin(start.theta1)-3, final.theta0, final.theta1, final.phi,...
                  xi_1, xi_2, xi_3];
                      
 % Central function referencing to the other m-files via ODEFunc
@@ -138,6 +154,7 @@ for i=1:length(t)
 end
 
 %% Visualization 
+
 
 % Plot 1: Forward Motion - Moving Truck/Trailer
 figure(1)
@@ -163,7 +180,7 @@ plot(x1, y1, 'Color', 'b');  % Resulting trajectory of Truck/Trailer System (Tra
 title('Plot 2: Configuration View - Discrete Points of Truck/Trailer')
 xlabel('x-coordinate')
 ylabel('y-coordinate')
-axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
+%axis([start.x0-5 final.x0+10 start.y0-5 final.y0+10]) % Scaling axis
 grid on
 
 % Plot 3: Reference Trajectory vs Resulting Trajectories (check overlapping)
@@ -180,7 +197,7 @@ legend('Resulting Trajectory Truck', 'Resulting Trajectory Trailer', 'Reference 
 axis equal
 grid on
 
-%{
+
 % Plot 4: Add on - Backward Motion
 %figure(4) 
 %title('Plot 4: Add on - Backward Motion')

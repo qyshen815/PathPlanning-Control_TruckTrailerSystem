@@ -14,7 +14,7 @@ function y_T = NonlinearOutputFunction(State, Parameters)
 d_1 = Parameters.d1;
 x_0 = State(1); 
 y_0 = State(2); 
-theta_1 = State(3);
+theta_1 = State(4);
 
 % Define elements of the nonlinear output vector
 y_1 = x_0 - d_1*cos(theta_1);

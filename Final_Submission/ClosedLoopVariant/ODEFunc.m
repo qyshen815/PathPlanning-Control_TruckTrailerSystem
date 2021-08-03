@@ -14,9 +14,13 @@ function dState = ODEFunc(t, State, Parameters)
     % Calculate reference values of x and y
     [Ref, eta, xRef_dot] = CalcRefValues(t, Parameters);
     
+    
+    %% 
+    % Nonlinear output function y_T = h(x_T)
+    y_T = NonlinearOutputFunction(State, Parameters);
     %%
+    
     % steering Law calculate input reference values v and phi
-    y_T = [0;0];
     ny = Steering_StabControl(Ref,State,y_T, Parameters); 
     
     %%
@@ -43,8 +47,6 @@ function dState = ODEFunc(t, State, Parameters)
     % Concatenate Truck and xi vector to State = [x_T; x_C]
     [State, dState] = StateConcatenate(x_T, x_C, dx_T, dx_C);
     
-    %% 
-    % Nonlinear output function y_T = h(x_T)
-    y_T = NonlinearOutputFunction(State, Parameters);
+    
     
 end
