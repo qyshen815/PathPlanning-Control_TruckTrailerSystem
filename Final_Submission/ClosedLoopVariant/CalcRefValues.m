@@ -22,9 +22,17 @@ h = Parameters.coef(8);
 x0 = Parameters.x0;
 x1 = Parameters.x1; 
 T = Parameters.T; 
+direction = Parameters.direction;
 
 % Time parametrization with helper variable tau
-tau = (T - t)/T; 
+if direction == 1           % forward motion
+    tau = t/T; 
+elseif direction == -1      % backward motion 
+    tau = (T - t)/T; 
+else                        % error case
+    disp('ERROR') 
+end
+
 
 % Defining a scaling parameter and its first derivative
 s_tau = 3*tau^2 - 2*tau^3; 
@@ -32,7 +40,11 @@ ds_tau = 6*tau - 6*tau^2;
 
 % Possible time parametrization of x and its first derivative
 xRef = x0 + (x1-x0)*s_tau; 
-xRef_dot = -1/T*(x1-x0)*ds_tau; % x dot needed as input for controller state
+if direction == 1
+    xRef_dot = 1/T*(x1-x0)*ds_tau; % x dot needed as input for controller state
+else 
+    xRef_dot = -1/T*(x1-x0)*ds_tau; % x dot needed as input for controller state
+end
 
 % Polynomial with time parametrization 
 yRef =   a*xRef^7     + b*xRef^6     + c*xRef^5     + d*xRef^4    + e*xRef^3   + f*xRef^2   + g*xRef^1 + h;
